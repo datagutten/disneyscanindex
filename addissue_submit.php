@@ -1,3 +1,11 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Add issue</title>
+</head>
+
+<body>
 <?Php
 require 'class.php';
 $scanindex=new scanindex;
@@ -82,3 +90,7 @@ foreach($stories as $story)
 	
 }
 
+echo "<p><a href=\"addissue.php?file=".dirname($file)."\">Add another</a></p>\n";
+?>
+</body>
+</html>
