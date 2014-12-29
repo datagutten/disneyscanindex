@@ -28,6 +28,8 @@ function validate_issue_code()
 		if (request.readyState == 4 && request.status == 200) 
 		{ 
  			document.getElementById("validcode").innerHTML = request.responseText
+			document.getElementById("searchlink").setAttribute('href',"http://coa.inducks.org/issue.php?c="+issuecode.value);
+			document.getElementById("induckslink").innerHTML = "Show "+issuecode.value+" on inducks";	
 		} 
 	}
 	request.send(null); 

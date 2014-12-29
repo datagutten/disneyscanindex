@@ -30,7 +30,7 @@ $file=$_GET['file'];
   </p>
   <p>Torrent site: 
     <input type="text" name="torrentsite" id="torrentsite" list="torrentsites" onChange="get_search_link()">
-  </p>
+    <a href="" id="induckslink"></a></p>
   <p>Torrent id: 
     <input type="text" name="torrentid" id="torrentid">
 	<a href="" id="searchlink"></a>
