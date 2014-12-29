@@ -5,9 +5,7 @@ $scanindex=new scanindex;
 if(strlen($_GET['issuecode'])<4)
 	die();
 
-$st_issuecode=$scanindex->db_coa->prepare("SELECT issuecode FROM coa.inducks_issue WHERE issuecode=?");
-$st_issuecode->execute(array($_GET['issuecode']));
-if($st_issuecode->rowCount()>0)
+if($scanindex->validate_issue_code($_GET['issuecode']))
 {
 	echo "Issue code is valid";
 }

@@ -16,4 +16,13 @@ class scanindex
 		if($this->db_scanindex===false)
 			trigger_error("Unable to open scan index database",E_USER_ERROR);
 	}
+	function validate_issue_code($issuecode)
+	{
+		$st_issuecode=$this->db_coa->prepare("SELECT issuecode FROM coa.inducks_issue WHERE issuecode=?");
+		$st_issuecode->execute(array($issuecode));
+		if($st_issuecode->rowCount()>0)
+			return true;
+		else
+			return false;
+	}
 }
