@@ -32,7 +32,7 @@ foreach(array_diff(scandir($dir),array('.','..')) as $file)
 		if(is_dir($dir.'/'.$file))
 			echo "<a href=\"?file=$dir/$file\">$file</a><br />\n";
 		else
-			echo "<a href=\"addissue_web_form.php?file=$basepath/$file\">$file</a><br />\n";
+			echo "<a href=\"addissue_web_form.php?file=".urlencode($basepath.'/'.$file)."\">$file</a><br />\n";
 	}
 
 }
