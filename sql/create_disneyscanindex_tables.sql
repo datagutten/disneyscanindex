@@ -30,7 +30,7 @@ CREATE TABLE `files` (
   `storycode` varchar(19) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `story_UNIQUE` (`story`)
-) ENGINE=InnoDB AUTO_INCREMENT=627 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -45,7 +45,7 @@ CREATE TABLE `stories` (
   `storycode` varchar(19) NOT NULL,
   `issuecode` varchar(17) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=603 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -62,7 +62,7 @@ CREATE TABLE `torrents` (
   `story` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `story_UNIQUE` (`story`)
-) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -91,4 +91,4 @@ CREATE TABLE `torrentsites` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-12-29 14:16:46
+-- Dump completed on 2014-12-31 15:40:09
