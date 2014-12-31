@@ -60,8 +60,7 @@ CREATE TABLE `torrents` (
   `site` varchar(45) NOT NULL,
   `torrentid` int(11) NOT NULL,
   `story` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `story_UNIQUE` (`story`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

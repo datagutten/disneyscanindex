@@ -11,19 +11,24 @@ ini_set('display_errors',true);
 require 'class.php';
 $scanindex=new scanindex;
 require 'datalist.php';
-$file=$_GET['file'];
+if(isset($_GET['file']))
+	$file=$_GET['file'];
+else
+	$file='';
 
 ?>
 <script type="text/javascript" src="js/addissue_web_form.js"></script>
 
 <?Php
-	echo '<span id="searchstring" style="display:none">'.preg_replace('/(.+?)\(.+/','$1',basename($file))."</span>\n";
 	$st_sites=$scanindex->db_scanindex->query("SELECT * FROM torrentsites");
 	$sites=$st_sites->fetchAll(PDO::FETCH_ASSOC);
 	echo datalist('torrentsites',array_column($sites,'name'));
-	echo "<p>Adding <span id=\"file\">{$_GET['file']}</span></p>\n";
-
-$publication='';
+	$publication='';
+if(!empty($file))
+{
+	echo '<span id="searchstring" style="display:none">'.preg_replace('/(.+?)\(.+/','$1',basename($file))."</span>\n";
+	echo "<p>Adding <span id=\"file\">{$file}</span></p>\n";
+//Try to find issue or publication from file path and name
 if(preg_match("^{$scanindex->filepath}/([a-z]+)\-(.+?)/([0-9\-]*).+^",$file,$issueinfo))
 {
 	if($scanindex->validate_issue_code($issueinfo[1].'/'.$issueinfo[2].$issueinfo[3],'issue'))
@@ -31,6 +36,11 @@ if(preg_match("^{$scanindex->filepath}/([a-z]+)\-(.+?)/([0-9\-]*).+^",$file,$iss
 	elseif($scanindex->validate_issue_code($issueinfo[1].'/'.$issueinfo[2],'publication'))
 		$publication=$issueinfo[1].'/'.$issueinfo[2];
 }
+}
+else
+	echo "<p>Add torrent for issue</p>\n";
+if(isset($_GET['issue']))
+	$publication=$_GET['issue'];
 ?>
 
     <form name="form1" method="post" action="addissue_submit.php">

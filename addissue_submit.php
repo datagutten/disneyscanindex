@@ -7,17 +7,15 @@
 
 <body>
 <?Php
+ini_set('display_errors',true);
 require 'class.php';
 $scanindex=new scanindex;
 $st_insert_story=$scanindex->db_scanindex->prepare("INSERT INTO stories (storycode,issuecode) VALUES (?,?)");
 $st_insert_file=$scanindex->db_scanindex->prepare("INSERT INTO files (story,path,storycode) VALUES (?,?,?)");
 
-if(isset($_POST['file']))
+if(!empty($_POST['file']))
+{
 	$file=$_POST['file'];
-elseif(isset($argv[1]))
-	$file=$argv[1];
-else
-	die("No file specified\n");
 
 $file=realpath($file);
 
@@ -27,7 +25,7 @@ if(getcwd()===false)
 	trigger_error("Unable to find current working dir",E_USER_ERROR);
 if($file===false || substr($file,0,1)!=='/')
 	trigger_error("Unable to find real file path, working dir is ".getcwd(),E_USER_ERROR);
-
+}
 if(isset($_POST['issuecode']))
 	$issue=$_POST['issuecode'];
 elseif(isset($argv[2]))
@@ -54,6 +52,7 @@ $files_indb_storyid=array_column($files_indb,'story'); //Make an array with the 
 
 $st_update_file=$scanindex->db_scanindex->prepare("UPDATE files SET path=? WHERE id=?");
 
+$st_torrentcheck=$scanindex->db_scanindex->prepare("SELECT * FROM torrents WHERE site=? AND torrentid=? AND story=?");
 $st_insert_torrent=$scanindex->db_scanindex->prepare("INSERT INTO torrents (site,torrentid,story) VALUES (?,?,?)");
 
 //print_r($files_indb);
@@ -75,21 +74,38 @@ foreach($stories as $story)
 	else
 		echo "Story {$story['storycode']} is already added for $issue<br />\n";
 	
-	if($storyid!==false) //File is not in DB, insert it
-		$st_insert_file->execute(array($storyid,$file,$story['storycode']));
-	if(($filekey=array_search($storyid,$files_indb_storyid))!==false && $files_indb[$filekey]['path']!=$file) //File is in db, but path is different. Update it
+	if(!empty($_POST['file']))
 	{
-		echo "Updating path for {$story['storycode']} to $file<br />\n";
-		$st_update_file->execute(array($file,$files_indb[$filekey]['id']));
+		if($storyid!==false) //File is not in DB, insert it
+			$st_insert_file->execute(array($storyid,$file,$story['storycode']));
+		if(($filekey=array_search($storyid,$files_indb_storyid))!==false && $files_indb[$filekey]['path']!=$file) //File is in db, but path is different. Update it
+		{
+			echo "Updating path for {$story['storycode']} to $file<br />\n";
+			$st_update_file->execute(array($file,$files_indb[$filekey]['id']));
+		}
 	}
-		
 	if(!empty($_POST['torrentsite']) && !empty($_POST['torrentid']))
 	{
-		$st_insert_torrent->execute(array($_POST['torrentsite'],$_POST['torrentid'],$storyid));
+		if($st_torrentcheck->execute(array($_POST['torrentsite'],$_POST['torrentid'],$storyid))===false) //Check is torrent already is added
+		{
+			$errorinfo=$st_torrentcheck->errorInfo();
+			trigger_error("SQL error: ".$errorinfo[2],E_USER_WARNING);
+		}
+		elseif($st_torrentcheck->rowCount()>0)
+			echo "Torrent {$_POST['torrentid']} from {$_POST['torrentsite']} already added<br />\n";
+		else
+		{
+			echo "Adding torrent {$_POST['torrentid']} from {$_POST['torrentsite']}<br />\n";
+			if($st_insert_torrent->execute(array($_POST['torrentsite'],$_POST['torrentid'],$storyid))===false)
+			{
+				$errorinfo=$st_insert_torrent->errorInfo();
+				trigger_error("SQL error: ".$errorinfo[2],E_USER_WARNING);
+			}
+		}
 	}
 	
 }
-
+if(isset($file))
 echo "<p><a href=\"addissue.php?file=".dirname($file)."\">Add another</a></p>\n";
 ?>
 </body>
