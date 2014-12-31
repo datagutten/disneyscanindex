@@ -26,14 +26,12 @@ else
 	$personcode=$_GET['person'];
 //$personcode='AMi';
 $issuecode='no/%';
-/*$st=$db->prepare("SELECT * FROM inducks_storyjob,inducks_story,inducks_entry WHERE inducks_storyjob.personcode=? AND inducks_entry.issuecode LIKE ? AND (inducks_storyversion.kind='n' OR inducks_storyversion.kind='k')
-AND inducks_storyjob.storyversioncode=inducks_story.originalstoryversioncode
-AND inducks_storyjob.storyversioncode=inducks_entry.storyversioncode");*/
-$st_coa=$scanindex->db_coa->prepare("SELECT inducks_story.storycode,inducks_story.firstpublicationdate,inducks_entry.title
-FROM inducks_storyjob,inducks_story,inducks_entry,inducks_storyversion WHERE inducks_storyjob.personcode=? AND inducks_entry.issuecode LIKE ? AND (inducks_storyversion.kind='n' OR inducks_storyversion.kind='k')
+$st_coa=$scanindex->db_coa->prepare("SELECT inducks_story.storycode,inducks_story.firstpublicationdate,inducks_entry.title,inducks_entry.issuecode
+FROM inducks_storyjob,inducks_storyversion,inducks_story,inducks_entry WHERE inducks_storyjob.personcode=? AND inducks_entry.issuecode LIKE ?
+AND (inducks_storyversion.kind='n' OR inducks_storyversion.kind='k')
+AND inducks_storyjob.storyversioncode=inducks_storyversion.storyversioncode
 AND inducks_storyversion.storycode=inducks_story.storycode
 AND inducks_storyjob.storyversioncode=inducks_entry.storyversioncode
-AND inducks_storyjob.storyversioncode=inducks_storyversion.storyversioncode
 ORDER BY inducks_story.firstpublicationdate");
 $st_coa->execute(array($personcode,$issuecode));
 $stories=$st_coa->fetchAll(PDO::FETCH_ASSOC);
