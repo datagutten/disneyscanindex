@@ -12,6 +12,7 @@ require 'class.php';
 $scanindex=new scanindex;
 require 'datalist.php';
 $file=$_GET['file'];
+
 ?>
 <script type="text/javascript" src="js/addissue_web_form.js"></script>
 
@@ -21,15 +22,24 @@ $file=$_GET['file'];
 	$sites=$st_sites->fetchAll(PDO::FETCH_ASSOC);
 	echo datalist('torrentsites',array_column($sites,'name'));
 	echo "<p>Adding <span id=\"file\">{$_GET['file']}</span></p>\n";
-	?>
+
+$publication='';
+if(preg_match("^{$scanindex->filepath}/([a-z]+)\-(.+?)/([0-9\-]*).+^",$file,$issueinfo))
+{
+	if($scanindex->validate_issue_code($issueinfo[1].'/'.$issueinfo[2].$issueinfo[3],'issue'))
+		$publication=$issueinfo[1].'/'.$issueinfo[2].$issueinfo[3];
+	elseif($scanindex->validate_issue_code($issueinfo[1].'/'.$issueinfo[2],'publication'))
+		$publication=$issueinfo[1].'/'.$issueinfo[2];
+}
+?>
 
     <form name="form1" method="post" action="addissue_submit.php">
   <p>Issue: 
-    <input type="text" name="issuecode" id="issuecode" onKeyUp="validate_issue_code()">
+    <input type="text" name="issuecode" id="issuecode" value="<?php echo $publication; ?>" onKeyUp="validate_issue_code()">
     <span id="validcode"></span>
   </p>
   <p>Torrent site: 
-    <input type="text" name="torrentsite" id="torrentsite" list="torrentsites" onChange="get_search_link()">
+    <input type="text" name="torrentsite" id="torrentsite" list="torrentsites" onChange="get_search_link()" onKeyUp="get_search_link()">
     <a href="" id="induckslink"></a></p>
   <p>Torrent id: 
     <input type="text" name="torrentid" id="torrentid">

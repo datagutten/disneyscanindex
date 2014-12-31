@@ -16,13 +16,19 @@ class scanindex
 		if($this->db_scanindex===false)
 			trigger_error("Unable to open scan index database",E_USER_ERROR);
 	}
-	function validate_issue_code($issuecode)
+	function validate_issue_code($code,$mode='issue')
 	{
-		$st_issuecode=$this->db_coa->prepare("SELECT issuecode FROM coa.inducks_issue WHERE issuecode=?");
-		$st_issuecode->execute(array($issuecode));
+		if($mode=='issue')
+			$st_issuecode=$this->db_coa->prepare("SELECT issuecode FROM inducks_issue WHERE issuecode=?");
+		elseif($mode=='publication')
+			$st_issuecode=$this->db_coa->prepare("SELECT publicationcode FROM inducks_publication WHERE publicationcode=?");
+		else
+			trigger_error("Invalid mode: $mode",E_USER_ERROR);
+		$st_issuecode->execute(array($code));
 		if($st_issuecode->rowCount()>0)
 			return true;
 		else
 			return false;
 	}
+	
 }
