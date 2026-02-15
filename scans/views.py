@@ -93,6 +93,7 @@ def pdf_proxy(request, scan_id: int = None, file_name=None):
                 response['Content-Disposition'] = 'inline; filename="' + file.name + '"'
             else:
                 response = HttpResponse(fp.read(), content_type='application/octet-stream')
+                response['Content-Disposition'] = 'filename="' + file.name + '"'
 
             return response
     return HttpResponseNotFound('File not found ' + '\n'.join(map(str, files)))
