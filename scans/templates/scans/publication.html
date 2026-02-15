@@ -1,0 +1,21 @@
+{% extends 'scans/base.html' %}
+{% block body %}
+    <table class="table">
+        <tr>
+            <th>Issue code</th>
+            <th>File</th>
+        </tr>
+
+        {% for year, issues in issues_year.items %}
+            <tr>
+                <th colspan="2">{{ year }}</th>
+            </tr>
+            {% for issue in issues %}
+                <tr>
+                    <td>{{ issue }}</td>
+                    <td><a href="{% url 'scans:pdf' %}?file={{ issue.file }}">{{ issue.file }}</a></td>
+                </tr>
+            {% endfor %}
+        {% endfor %}
+    </table>
+{% endblock %}

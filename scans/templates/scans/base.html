@@ -1,0 +1,19 @@
+{# Load the tag library #}
+{% load django_bootstrap5 %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {# Load CSS and JavaScript #}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <meta charset="UTF-8">
+    <title>{{ title|default:"Disney scan index" }}</title>
+</head>
+<body>
+{% include 'scans/navbar.html' %}
+{% block body %}
+{% endblock %}
+</body>
+</html>

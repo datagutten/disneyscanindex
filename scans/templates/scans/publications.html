@@ -1,0 +1,20 @@
+{% extends 'scans/base.html' %}
+
+{% block body %}
+    <table class="table">
+        <tr>
+            <th>Publication</th>
+            <th>Code</th>
+            <th>Issues</th>
+        </tr>
+
+        {% for publication in publications %}
+            <tr>
+                <td><a href="{% url 'scans:publication' code=publication.code_dash %}">{{ publication }}</a></td>
+                <td>{{ publication.pk }}</td>
+                <td><a href="{% url 'scans:publication' code=publication.code_dash %}">{{ publication.issues.count }}</a></td>
+            </tr>
+        {% endfor %}
+
+    </table>
+{% endblock %}

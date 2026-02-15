@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "disneyscanindex"
+version = "0.1.0"
+description = "A tool to organize scanned disney comics using data from I.N.D.U.C.K.S"
+authors = ["datagutten <datagutten@datagutten.net>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.1.4"
+requests = "^2.32.3"
+mysqlclient = "^2.2.6"
+django-bootstrap5 = "^24.3"
+python-dotenv = "^1.2.1"
+drf-spectacular = "^0.29.0"
+sorl-thumbnail = "^12.11.0"
+pillow = "^12.0.0"
+pdf2image = "^1.17.0"
+rarfile = "^4.2"
+lxml = "^6.0.2"
+
+
+[tool.poetry.group.dev.dependencies]
+python-dotenv = "^1.0.1"
+
+
+[tool.poetry.group.web.dependencies]
+gunicorn = "^23.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
