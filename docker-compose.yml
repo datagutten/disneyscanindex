@@ -1,0 +1,24 @@
+services:
+  disneyscans:
+    restart: unless-stopped
+    build: .
+    volumes:
+    - media_volume:/home/app/media
+
+    env_file:
+    - ./.env
+
+    environment:
+      COMICS_ROOT: /comics
+
+
+  nginx:
+      restart: unless-stopped
+      build: .
+      volumes:
+      - media_volume:/home/app/media
+
+      command: ["nginx", "-g", "daemon off;"]
+
+volumes:
+  media_volume:
