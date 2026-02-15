@@ -2,7 +2,7 @@ import re
 from pathlib import Path
 
 from disneyscanindex import settings
-from scans import folder_mappings, models, api_helper
+from scans import models, api_helper
 
 comic_extensions = ['.pdf', '.cbr', '.cbz']
 
@@ -32,13 +32,6 @@ def find_issue(publication: models.Publication, num: int, year: int):
 
 def get_issue_number(file: Path, publication: models.Publication):
     file_name = file.name
-    if publication.pk in folder_mappings.issuecode:
-        matches = folder_mappings.issuecode[publication.pk].search(file.name)
-        if matches:
-            if len(matches.groups()) == 1:
-                return None, matches.group(1)
-            else:
-                pass
 
     matches_year = re.search(r'([12]\d{3}).*?[\s_-](\d+)', file_name)
     if matches_year:
