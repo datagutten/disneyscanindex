@@ -3,14 +3,14 @@
 ###########
 
 # pull official base image
-FROM python:3.12-bookworm AS builder
+FROM python:3.14-trixie AS builder
 
 # set work directory
 WORKDIR /usr/src/app
 
 # set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
 RUN pip install --upgrade pip poetry poetry-plugin-export
 
@@ -26,7 +26,7 @@ RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels gunicorn
 # FINAL #
 #########
 
-FROM python:3.12-slim-bookworm
+FROM python:3.14-slim-trixie
 
 # create directory for the app user
 RUN mkdir -p /home/app
@@ -41,8 +41,7 @@ ENV APP_HOME=/home/app/web
 WORKDIR /home/app
 
 # install dependencies
-RUN mkdir -p /etc/apt/sources.list.d
-COPY debian.sources /etc/apt/sources.list.d/debian.sources
+RUN sed -i "s/Components: main/Components: main non-free/" /etc/apt/sources.list.d/debian.sources
 RUN apt-get update && apt-get install -y --no-install-recommends default-libmysqlclient-dev nginx poppler-utils unrar-free p7zip-full unrar pdftk
 
 COPY --from=builder /usr/src/app/wheels /wheels
