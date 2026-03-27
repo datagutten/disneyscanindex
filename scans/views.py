@@ -129,7 +129,7 @@ def renumber(request):
 
     publicationcode = api_helper.replace_dash(request.GET.get('publication'))
     issues = models.IssueScan.objects.filter(publication_id=publicationcode)
-    return render(request, 'scans/renumber.html', {'issues': issues.all()})
+    return render(request, 'scans/renumber.html', {'issues': issues.all(), 'publication': issues.first().publication})
 
 
 def _find_comics(path: Path) -> list[Path]:
