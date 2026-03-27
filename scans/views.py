@@ -22,7 +22,7 @@ def _issues_year(request, publication_obj: models.Publication):
 
 
 def completion(request):
-    code = request.GET.get('publicationcode')
+    code = request.GET.get('publication')
     publication_obj = get_object_or_404(models.Publication, publicationcode=code)
     years = publication_obj.issues.values('year').distinct()
     return _issues_year(request, publication_obj)
@@ -30,7 +30,7 @@ def completion(request):
 
 def publication(request, code=None):
     if not code:
-        code = request.GET.get('publicationcode')
+        code = request.GET.get('publication')
         if not code:
             return HttpResponseRedirect(reverse('scans:publications'))
     else:
@@ -188,7 +188,7 @@ def identify(request):
 
 
 def issue_info(request):
-    publicationcode = request.GET.get('publicationcode')
+    publicationcode = request.GET.get('publication')
     filename = request.GET.get('filename')
     publication_obj = models.Publication.objects.get(publicationcode=publicationcode)
     issue_obj = loader.identify_issue(Path(filename), publication_obj)
