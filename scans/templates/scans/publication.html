@@ -3,16 +3,22 @@
     <table class="table">
         <tr>
             <th>Issue code</th>
+            <th>Title</th>
             <th>File</th>
         </tr>
 
         {% for year, issues in issues_year.items %}
             <tr>
-                <th colspan="2">{{ year }}</th>
+                <th colspan="3">{{ year|default:"Unknown" }}</th>
             </tr>
             {% for issue in issues %}
                 <tr>
-                    <td>{{ issue }}</td>
+                    {% if issue.issuecode %}
+                        <td><a href="{{ issue.inducks_url }}">{{ issue.issuecode }}</a></td>
+                        <td>{{ issue.title|default:"" }}</td>
+                    {% else %}
+                        <td colspan="2">{{ issue }}</td>
+                    {% endif %}
                     <td><a href="{% url 'scans:pdf' %}?file={{ issue.file }}">{{ issue.file }}</a></td>
                 </tr>
             {% endfor %}

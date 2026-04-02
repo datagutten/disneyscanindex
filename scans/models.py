@@ -62,6 +62,9 @@ class IssueScan(models.Model):
     def api_url(self):
         return settings.INDUCKS_API + 'issue/' + self.issuecode_dash
 
+    def inducks_url(self):
+        return 'https://inducks.org/issue.php?c=%s' % self.issuecode
+
     @property
     def path(self) -> Path:
         path_db = Path(self.file)
