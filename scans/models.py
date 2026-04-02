@@ -3,15 +3,13 @@ import re
 from io import BytesIO
 from pathlib import Path
 
-from PIL import Image
+from django.conf import settings
 from django.core.files import File
 from django.db import models
-from django.conf import settings
-from django.http import HttpResponseBadRequest, HttpResponseNotFound
-from sorl.thumbnail import ImageField, get_thumbnail
-from pdf2image import convert_from_path, convert_from_bytes
-from zipfile import ZipFile
-import rarfile
+from django.http import HttpResponseNotFound
+from pdf2image import convert_from_path
+from sorl.thumbnail import ImageField
+
 from scans import thumbnail, api_helper
 
 
